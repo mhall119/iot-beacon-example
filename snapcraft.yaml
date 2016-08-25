@@ -1,0 +1,26 @@
+name: couchbase-beacon
+version: 0.1
+summary: Example of Couchbase collecting iBeacon data
+description: This IoT project will scan for portable bluetooth iBeacons and save their information to a Couchbase NoSQL database.
+confinement: strict
+
+apps:
+    scan:
+        command: ibeacon_scan
+        #daemon: simple
+        plugs: [network, network-bind, bluetooth-control]
+parts:
+    jars:
+        plugin: maven
+        source: .
+    script:
+        plugin: copy
+        source: .
+        stage-packages:
+            - default-jre-headless
+            - default-jdk-headless
+            - bluez
+            - bluez-hcidump
+        files:
+            ibeacon_scan: bin/ibeacon_scan
+        after: [jars]
